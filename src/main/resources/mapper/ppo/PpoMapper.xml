@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.vita.ppo.PpoMapper">
+
+    <select id="selPpoList" resultType="HashMap" parameterType="hashMap">
+    	SELECT
+			  PPO_SEQ
+			, PROJ_NM
+			, SUB_TITLE
+			, CNTC
+			, PRIVATE_YN
+			, DELETE_YN
+			, REPLE_USE_YN
+			, HIT
+			, CREATE_ID
+			, DATE_FORMAT(CREATE_DT, '%Y.%m.%d') AS CREATE_DT
+			, ROW_NUMBER() OVER(ORDER BY PPO_SEQ DESC) AS RNUM
+		FROM MP_PPO
+		WHERE 1=1
+		AND DELETE_YN = 'N'
+		<if test="keyword!=null and !keyword.equals('')">
+			AND PROJ_NM LIKE CONCAT('%', #{keyword}, '%')
+		</if>
+        ORDER BY PPO_SEQ DESC
+		LIMIT 12 OFFSET #{pageSize}
+    </select>
+    
+    <select id="selPpoListCount" resultType="Integer" parameterType="hashMap">
+    	SELECT
+			  COUNT(*) AS CNT
+		FROM MP_PPO
+		WHERE 1=1
+		AND DELETE_YN = 'N'
+		<if test="keyword!=null and !keyword.equals('')">
+			AND PROJ_NM LIKE CONCAT('%', #{keyword}, '%')
+		</if>
+    </select>
+    <!-- 
+    <insert id="boardInsert" parameterType="hashMap">
+    	Insert Into VT_BOARD (
+    		  BOARD_CLASS
+    		, BOARD_POST_CLASS
+    		, TITLE
+    		, CONTENTS
+    		, CREATE_ID
+    	)VALUES (
+    		  #{code}
+    		, '00002'
+    		, #{title}
+    		, #{contest}
+    		, 'SYSTEM'
+    	)
+    </insert>
+    
+    <select id="boardDtlSearch" resultType="HashMap" parameterType="hashMap">
+    	SELECT
+			  BOARD_SEQ
+			, BOARD_CLASS
+			, BOARD_POST_CLASS
+			, TITLE
+			, CONTENTS
+			, Private_YN
+			, HIT
+			, CREATE_ID
+			, REPLE_USE_YN
+			, DATE_FORMAT(CREATE_DT, '%Y.%m.%d') AS CREATE_DT
+		FROM VT_BOARD
+		WHERE BOARD_SEQ = #{BOARD_SEQ}
+    </select>
+    
+    <update id="updBoardDtlSearchHit" parameterType="hashMap">
+    	UPDATE VT_BOARD
+    	SET HIT = NVL2(HIT, HIT, 0) + 1
+    	WHERE BOARD_SEQ = #{BOARD_SEQ} 
+    </update>
+     -->
+</mapper>
