@@ -16,7 +16,7 @@
 	<name>vita</name>
 	<description>vita web Test Project</description>
 	<properties>
-		<webapp.lib>/home/hadoop/.jenkins/workspace/lib</webapp.lib>
+		<webcontent-dir>${project.basedir}/src/main/webapp/WEB-INF/lib</webcontent-dir>
 		<java.version>1.8</java.version>
 	</properties>
 
